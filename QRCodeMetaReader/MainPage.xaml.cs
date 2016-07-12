@@ -73,8 +73,9 @@ namespace QRCodeMetaReader
 @"---- ResultMetadata ----
 {0}
 ----
+BarcodeFormat:{3}
 RawBytes.Count:{1}
-Text:{2}", meta, barcodeResult.RawBytes.Count(), barcodeResult.Text);
+Text:{2}", meta, barcodeResult.RawBytes.Count(), barcodeResult.Text, barcodeResult.BarcodeFormat);
             }
             image.Source = bitmap;
         }
