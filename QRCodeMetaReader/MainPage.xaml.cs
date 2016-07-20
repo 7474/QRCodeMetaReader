@@ -31,17 +31,25 @@ namespace QRCodeMetaReader
             this.InitializeComponent();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await PickBarcodeImageFile();
         }
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            await PickBarcodeImageFile();
+            try
+            {
+                var wbitmap = await PickBarcodeImageFile();
+                Decode(wbitmap);
+                image.Source = wbitmap;
+            }
+            catch (Exception ex)
+            {
+                textBox.Text = ex.ToString();
+            }
         }
 
-        private async Task PickBarcodeImageFile()
+        private async Task<WriteableBitmap> PickBarcodeImageFile()
         {
             var picker = new FileOpenPicker();
             picker.FileTypeFilter.Add(".png");
@@ -54,6 +62,12 @@ namespace QRCodeMetaReader
             // XXX 二度読みがださい
             var wbitmap = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
             await wbitmap.SetSourceAsync(file.OpenStreamForReadAsync().Result.AsRandomAccessStream());
+
+            return wbitmap;
+        }
+
+        private void Decode(WriteableBitmap wbitmap)
+        {
             var barcodeReader = new BarcodeReader()
             {
                 AutoRotate = true
@@ -77,7 +91,6 @@ BarcodeFormat:{3}
 RawBytes.Count:{1}
 Text:{2}", meta, barcodeResult.RawBytes.Count(), barcodeResult.Text, barcodeResult.BarcodeFormat);
             }
-            image.Source = bitmap;
         }
     }
 }
