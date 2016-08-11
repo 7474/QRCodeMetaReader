@@ -30,6 +30,7 @@ namespace QRCodeMetaReader
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.Resuming += OnResuming;
         }
 
         /// <summary>
@@ -96,11 +97,18 @@ namespace QRCodeMetaReader
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+            var currentPage = Window.Current.Content as IAppEvent;
+            await currentPage?.OnSuspending(sender, e);
             deferral.Complete();
+        }
+
+        private async void OnResuming(object sender, object e)
+        {
+            var currentPage = Window.Current.Content as IAppEvent;
+            await currentPage?.OnResuming(sender, e);
         }
     }
 }

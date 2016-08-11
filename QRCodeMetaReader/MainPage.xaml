@@ -8,7 +8,7 @@
       Loaded="Page_Loaded">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <MediaElement x:Name="mediaElement" />
+        <CaptureElement  x:Name="captureElement" />
         <Image x:Name="image" />
         <TextBox x:Name="textBox"
                  Margin="32"
@@ -20,5 +20,11 @@
                 Margin="32,0,0,0"
                 VerticalAlignment="Top"
                 Click="button_Click" />
+        <Button x:Name="buttonReal"
+                Content="Capture"
+                HorizontalAlignment="Left"
+                Margin="144,0,0,0"
+                VerticalAlignment="Top"
+                Click="buttonReal_Click" />
     </Grid>
 </Page>
